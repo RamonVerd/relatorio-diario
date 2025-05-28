@@ -9,7 +9,8 @@ services:
     depends_on:
       - postgres
     environment:                   
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://relatorio-diario_owner:npg_dVtxEqTUz52D@ep-polished-darkness-a8jtfdqu-pooler.eastus2.azure.neon.tech/relatorio-diario?sslmode=require
+      - SPRING_DATASOURCE_URL=jdbc:mysql://localhost/relatorio?createDataBaseIfNotExist=true&serverTimezone=UTC
+      #- SPRING_DATASOURCE_URL=jdbc:postgresql://relatorio-diario_owner:npg_dVtxEqTUz52D@ep-polished-darkness-a8jtfdqu-pooler.eastus2.azure.neon.tech/relatorio-diario?sslmode=require
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=12345
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
@@ -17,28 +18,23 @@ services:
     networks:
       - minha-rede
 
-  postgres:
-    image: postgres:15
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_DB: relatorio
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: 12345
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - minha-rede
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U root"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+  mysql:
+  image: mysql:8.0
+  container_name: mysql_db
+  restart: always
+  environment:
+    MYSQL_DATABASE: relatorio
+    MYSQL_USER: root
+    MYSQL_PASSWORD: 12345
+    MYSQL_ROOT_PASSWORD: 12345
+  ports:
+    - "3306:3306"
+  volumes:
+    - mysql_data:/var/lib/mysql
 
 volumes:
-  postgres_data:
+  mysql_data:
+
 
 networks:
   minha-rede:
