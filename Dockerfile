@@ -1,18 +1,24 @@
-#FROM maven:3.9.6-eclipse-temurin-17 AS build
-FROM ubuntu:latest AS build
+# Etapa 1: Build
+FROM maven:3.8.7-eclipse-temurin-17 AS build
+WORKDIR /app
 
-RUN apt-get update
-RUN apt-get install openjdk-17-jdk -y
-#WORKDIR /app
-COPY . .
+# Copia os arquivos do projeto
+COPY pom.xml .
+COPY src ./src
 
-RUN apt-get install maven -y
+# Faz o build do projeto (gera o JAR)
 RUN mvn clean package -DskipTests
 
-# Etapa de execução
-FROM openjdk:17-jdk-slim
+# Etapa 2: Imagem final
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+
+# Copia o JAR gerado na etapa de build
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
-#WORKDIR /app
-COPY --from=build /app/target/relatorio-0.0.1-SNAPSHOT.jar app.jar
+
+# Comando para rodar
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
 
