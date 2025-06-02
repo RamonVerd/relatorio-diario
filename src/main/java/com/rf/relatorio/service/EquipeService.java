@@ -25,7 +25,7 @@ public class EquipeService {
 		return equipeRepository.save(equipe);
 	}
 	
-	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+	@Transactional(readOnly = true)
 	public List<Equipe> findAll() {
 		return equipeRepository.findAll();
 	}

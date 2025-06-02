@@ -23,7 +23,7 @@ public class RelatorioService {
 	}
 	
 	public Optional<Relatorio> buscarPorDataDoRelatorio(String data) {
-	        return relatorioRepository.findByDatadorelatorio(data);
+	  return relatorioRepository.findByDatadorelatorio(data);
 	}
 	
 	public Relatorio createRelatorio(Relatorio relatorio) {
