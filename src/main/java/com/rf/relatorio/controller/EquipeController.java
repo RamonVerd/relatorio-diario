@@ -42,7 +42,10 @@ public class EquipeController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<EquipeDTO> createEquipe(@RequestBody EquipeDTO equipeDTO) {
-		Equipe novaEquipe = equipeMapper.toEquipe(equipeDTO);
+		// Equipe novaEquipe = equipeMapper.toEquipe(equipeDTO);
+		Equipe novaEquipe = null;
+		novaEquipe.setNome(equipeDTO.getNome());
+	
 		Equipe equipeCriada = equipeService.createEquipe(novaEquipe);
 		
 		EquipeDTO dto = equipeMapper.toEquipeDTO(equipeCriada);
