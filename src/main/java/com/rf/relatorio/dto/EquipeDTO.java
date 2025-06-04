@@ -5,7 +5,7 @@ import java.util.List;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.rf.relatorio.entity.AgenteUser;
+import com.rf.relatorio.dto.AgenteUserDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,7 +25,7 @@ public class EquipeDTO {
 	@NotEmpty
 	private String nome;
 	
-	private List<AgenteUser> membros;
+	private List<AgenteUserDTO> membros;
 	
 //	@NotEmpty
 //	private String id_agentes;

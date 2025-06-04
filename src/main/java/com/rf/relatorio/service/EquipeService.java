@@ -25,6 +25,20 @@ public class EquipeService {
 		return equipeRepository.save(equipe);
 	}
 	
+@Transactional
+public Equipe findEquipeWithMembros(Long id) {
+	Equipe equipe = equipeRepository.findById(id).orElseThrow();
+	// Força o carregamento da coleção
+	equipe.getMembros().size(); // Truque para inicializar a coleção
+	return equipe;
+}
+
+// @Transactional
+// public EquipeDTO getEquipeDTO(Long id) {
+// 	Equipe equipe = equipeRepository.findById(id).orElseThrow();
+// 	return modelMapper.map(equipe, EquipeDTO.class);
+// }
+
 	@Transactional(readOnly = true)
 	public List<Equipe> findAll() {
 		return equipeRepository.findAll();

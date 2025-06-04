@@ -3,6 +3,7 @@ package com.rf.relatorio.entity;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +26,7 @@ public class Equipe {
     private Long id;
     private String nome;
     
-    @OneToMany(mappedBy = "equipe")
+    @OneToMany(mappedBy = "equipe", fetch = FetchType.EAGER)
     private List<AgenteUser> membros;
 	
 //	@Id
