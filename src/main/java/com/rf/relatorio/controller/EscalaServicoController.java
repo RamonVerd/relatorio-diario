@@ -68,7 +68,7 @@ public class EscalaServicoController {
 	@Operation(summary = "Buscar escala por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<EscalaServicoDTO> findById(@PathVariable Long id) {
-		EscalaServico escalaServico = escalaServicoService.FindById(id);
+		EscalaServico escalaServico = escalaServicoService.findById(id);
 		EscalaServicoDTO escalaDto = escalaServicoMapper.toEscalaServicoDTO(escalaServico);
 		
 		return ResponseEntity.ok(escalaDto);
