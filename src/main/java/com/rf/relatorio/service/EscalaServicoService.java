@@ -36,7 +36,7 @@ public class EscalaServicoService {
 	}
 	
 	@Transactional(readOnly = true)
-	public EscalaServico FindById(Long id) {
+	public EscalaServico findById(Long id) {
 		return escalaServicoRepository.findById(id).orElseThrow(() -> new EscalaServicoNotFoundException(id));
 	}
 	
