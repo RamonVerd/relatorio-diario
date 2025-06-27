@@ -1,5 +1,8 @@
 package com.rf.relatorio.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.rf.relatorio.dto.PermutasResumoDTO;
 import com.rf.relatorio.entity.Relatorio;
 import com.rf.relatorio.exception.RelatorioNotFoundException;
 import com.rf.relatorio.repository.RelatorioRepository;
@@ -67,5 +71,43 @@ public class RelatorioService {
 		return relatorioUpdate;
 	}
 	
+
+	public PermutasResumoDTO contarPermutasPorAgente(String nomeAgente, String dataInicio, String dataFim) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		LocalDate inicio = LocalDate.parse(dataInicio, DateTimeFormatter.ISO_DATE);
+		LocalDate fim = LocalDate.parse(dataFim, DateTimeFormatter.ISO_DATE);
+
+		List<Relatorio> todosRelatorios = relatorioRepository.findAll();
+
+		List<Relatorio> relatoriosNoPeriodo = todosRelatorios.stream()
+				.filter(r -> {
+						try {
+								LocalDate data = LocalDate.parse(r.getDatadorelatorio(), formatter);
+								return (data.isEqual(inicio) || data.isAfter(inicio)) &&
+												(data.isEqual(fim) || data.isBefore(fim));
+						} catch (Exception e) {
+								return false;
+						}
+				})
+				.toList();
+
+		long solicitadas = relatoriosNoPeriodo.stream()
+				.filter(r -> r.getAgentesparapermultar() != null)
+				.map(Relatorio::getAgentesparapermultar)
+				.flatMap(lista -> Arrays.stream(lista.split(",")))
+				.map(String::trim)
+				.filter(nome -> nome.equalsIgnoreCase(nomeAgente.trim()))
+				.count();
+
+		long realizadas = relatoriosNoPeriodo.stream()
+				.filter(r -> r.getAgentedefolgaparapermultar() != null)
+				.map(Relatorio::getAgentedefolgaparapermultar)
+				.flatMap(lista -> Arrays.stream(lista.split(",")))
+				.map(String::trim)
+				.filter(nome -> nome.equalsIgnoreCase(nomeAgente.trim()))
+				.count();
+
+		return new PermutasResumoDTO(solicitadas, realizadas);
+	}
 
 }

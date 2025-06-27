@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import com.rf.relatorio.dto.PermutasResumoDTO;
 
 import com.rf.relatorio.dto.RelatorioDTO;
 import com.rf.relatorio.entity.Relatorio;
@@ -26,7 +27,6 @@ import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/v1/relatorio")
-//@CrossOrigin(origins = "https://front-relatorio-v2.herokuapp.com/")
 @CrossOrigin(origins = "*")
 public class RelatorioController {
 
@@ -87,6 +87,16 @@ public class RelatorioController {
 		Relatorio relatorioAtualizada = relatorioMapper.toRelatorio(relatorioDTO);
 		Relatorio pessoa = relatorioService.update(id, relatorioAtualizada);
 		return ResponseEntity.ok(relatorioMapper.toDTO(pessoa));
+	}
+
+	@GetMapping("/contar-permutas")
+	public ResponseEntity<PermutasResumoDTO> contarPermutasAgente(
+					@RequestParam String nomeAgente,
+					@RequestParam String dataInicio,
+					@RequestParam String dataFim) {
+
+			PermutasResumoDTO resumo = relatorioService.contarPermutasPorAgente(nomeAgente, dataInicio, dataFim);
+			return ResponseEntity.ok(resumo);
 	}
 	
 	

@@ -26,7 +26,6 @@ import io.swagger.v3.oas.annotations.Operation;
 @RestController
 @RequestMapping("/api/v2/equipe")
 @CrossOrigin(origins = "*")
-//@CrossOrigin(origins = "https://front-relatorio-v2.herokuapp.com/")
 public class EquipeController {
 	
 	private EquipeService equipeService;
