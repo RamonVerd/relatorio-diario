@@ -98,6 +98,15 @@ public class HorasTrabalhadasController {
 
         return registroHorasService.calcularHorasTrabalhadas(agenteId, dataInicio, dataFim);
      }
+
+	@GetMapping("/calcular-todos")
+	public ResponseEntity<List<ResumoHorasDTO>> calcularHorasTodos(
+					@RequestParam String dataInicio,
+					@RequestParam String dataFim) {
+
+			List<ResumoHorasDTO> lista = registroHorasService.calcularParaTodos(dataInicio, dataFim);
+			return ResponseEntity.ok(lista);
+	}
 	
 	
 
