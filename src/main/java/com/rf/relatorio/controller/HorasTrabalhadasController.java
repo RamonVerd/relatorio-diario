@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rf.relatorio.dto.HorasTrabalhadasDTO;
 import com.rf.relatorio.dto.RegistroHorasDTO;
+import com.rf.relatorio.dto.ResumoHorasDTO;
 import com.rf.relatorio.entity.AgenteUser;
 import com.rf.relatorio.entity.RegistroHoras;
 import com.rf.relatorio.mapper.HoraTrabalhadasMapper;

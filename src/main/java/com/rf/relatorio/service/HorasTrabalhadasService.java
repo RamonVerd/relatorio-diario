@@ -2,7 +2,9 @@ package com.rf.relatorio.service;
 
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,48 +105,40 @@ public class HorasTrabalhadasService {
         return new HorasTrabalhadasDTO(horas, minutos, totalFaltas);
     }
 
-     public List<ResumoHorasDTO> calcularParaTodos(String dataInicioStr, String dataFimStr) {
-        LocalDate dataInicio = LocalDate.parse(dataInicioStr);
-        LocalDate dataFim = LocalDate.parse(dataFimStr);
+    public List<ResumoHorasDTO> calcularParaTodos(String dataInicioStr, String dataFimStr) {
+    LocalDate dataInicio = LocalDate.parse(dataInicioStr);
+    LocalDate dataFim = LocalDate.parse(dataFimStr);
 
-        LocalDateTime inicio = dataInicio.atStartOfDay();
-        LocalDateTime fim = dataFim.atTime(23, 59, 59);
+    LocalDateTime inicio = dataInicio.atStartOfDay();
+    LocalDateTime fim = dataFim.atTime(23, 59, 59);
 
-        List<AgenteUser> agentes = agenteRepository.findAll();
-        List<ResumoHorasDTO> resultado = new ArrayList<>();
+    List<AgenteUser> agentes = agenteRepository.findAll();
+    List<ResumoHorasDTO> resultado = new ArrayList<>();
 
-        for (AgenteUser agente : agentes) {
+    for (AgenteUser agente : agentes) {
 
-            // 1. Horas trabalhadas + faltas
-            HorasTrabalhadasDTO horasDTO = this.calcularHorasTrabalhadas(agente.getId(), inicio, fim);
+        // 1. Horas trabalhadas + faltas
+        HorasTrabalhadasDTO horasDTO = this.calcularHorasTrabalhadas(agente.getId(), inicio, fim);
 
-            // 2. Permutas
-            PermutasResumoDTO permutasDTO = relatorioService.contarPermutasPorAgente(
-                    agente.getNome(), dataInicio.toString(), dataFim.toString());
+        // 2. Permutas
+        PermutasResumoDTO permutasDTO = relatorioService.contarPermutasPorAgente(
+                agente.getNome(), dataInicio.toString(), dataFim.toString());
 
-            ResumoHorasDTO dto = ResumoHorasDTO.builder()
-                    .nome(agente.getNome())
-                    .cargo(agente.getFuncao())
-                    .totalHoras(horasDTO.getHoras())
-                    .minutosRestantes(horasDTO.getMinutos())
-                    .faltas(horasDTO.getTotalFaltas())
-                    .permutasSolicitadas(permutasDTO.getSolicitadas())
-                    .permutasRealizadas(permutasDTO.getRealizadas())
-                    .build();
+        ResumoHorasDTO dto = ResumoHorasDTO.builder()
+                .nome(agente.getNome())
+                .cargo(agente.getFuncao())
+                .totalHoras(horasDTO.getHoras())
+                .minutosRestantes(horasDTO.getMinutos())
+                .faltas(horasDTO.getTotalFaltas())
+                .permutasSolicitadas(permutasDTO.getSolicitadas())
+                .permutasRealizadas(permutasDTO.getRealizadas())
+                .build();
 
-            resultado.add(dto);
-        }
-
-        return resultado;
+        resultado.add(dto);
     }
+
+    return resultado;
+}
     
 
-    
-    
-
-    
-  
-  
-    
-    
 }
