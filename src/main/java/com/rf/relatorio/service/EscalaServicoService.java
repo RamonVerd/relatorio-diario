@@ -1,8 +1,8 @@
 package com.rf.relatorio.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +14,8 @@ import com.rf.relatorio.repository.EscalaServicoRepository;
 @Service
 public class EscalaServicoService {
 	
-	private EscalaServicoRepository escalaServicoRepository;
-	
 	@Autowired
-	public EscalaServicoService(EscalaServicoRepository escalaServicoRepository) {
-		this.escalaServicoRepository = escalaServicoRepository;
-	}
+	private EscalaServicoRepository escalaServicoRepository;
 
 	public EscalaServico createEscala(EscalaServico escala) {
 		return escalaServicoRepository.save(escala);

@@ -35,7 +35,6 @@ public class RelatorioController {
 	
 	private final RelatorioMapper relatorioMapper;
 
-	@Autowired
 	public RelatorioController(RelatorioService relatorioService, RelatorioMapper relatorioMapper) {
 		this.relatorioService = relatorioService;
 		this.relatorioMapper = relatorioMapper;
@@ -64,6 +63,11 @@ public class RelatorioController {
 		List<Relatorio> list = relatorioService.findAll();
 		List<RelatorioDTO> relatorioDTOList = relatorioMapper.toRelatorioDTOList(list);
 		return ResponseEntity.ok(relatorioDTOList);
+	}
+
+	@GetMapping("/ultimos30")
+	public List<Relatorio> getUltimos30Relatorios() {
+			return relatorioService.buscarUltimos30Relatorios();
 	}
 	
 	@Operation(summary = "Buscar relatório por id")

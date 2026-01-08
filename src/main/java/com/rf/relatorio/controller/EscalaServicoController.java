@@ -27,14 +27,11 @@ import io.swagger.v3.oas.annotations.Operation;
 @CrossOrigin(origins = "*")
 public class EscalaServicoController {
 	
-	private EscalaServicoService escalaServicoService;
-	private EscalaServicoMapper escalaServicoMapper;
-	
 	@Autowired
-	public EscalaServicoController(EscalaServicoService escalaServicoService, EscalaServicoMapper escalaServicoMapper) {
-		this.escalaServicoService = escalaServicoService;
-		this.escalaServicoMapper = escalaServicoMapper;
-	}
+	private EscalaServicoService escalaServicoService;
+
+	@Autowired
+	private EscalaServicoMapper escalaServicoMapper;
 	
 	@Operation(summary = "Criar escala")
 	@PostMapping

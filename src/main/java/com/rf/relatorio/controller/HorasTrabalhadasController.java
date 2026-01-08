@@ -33,80 +33,79 @@ import io.swagger.v3.oas.annotations.Operation;
 @CrossOrigin(origins = "*")
 public class HorasTrabalhadasController {
 	
-	 @Autowired
-	 private HorasTrabalhadasService registroHorasService;
+	@Autowired
+	private HorasTrabalhadasService registroHorasService;
+	
+	@Autowired
+	private AgenteUserService agenteUserService;
+		
+	@Autowired
+	private HoraTrabalhadasMapper horasTrabalhadasMapper;
 	 
-	 @Autowired
-	 private AgenteUserService agenteUserService;
-	 	 
-	 @Autowired
-	 private HoraTrabalhadasMapper horasTrabalhadasMapper;
-	 
-	 @PostMapping("/salvar")
-     public RegistroHoras salvarRegistro(@RequestBody RegistroHorasDTO dto) {
-		AgenteUser agente = agenteUserService.findById(dto.getAgente_id());
-		RegistroHoras registroHoras = this.horasTrabalhadasMapper.toRegistroHoras(dto);
-		registroHoras.setAgente(agente);
-        return registroHorasService.salvarRegistroHoras(registroHoras);
-     }
-	 
-	 @Operation(summary = "Editar registro de horas")
-	 @PutMapping("/{id}")
-	 public ResponseEntity<RegistroHorasDTO> update(@PathVariable Long id, @RequestBody RegistroHorasDTO registroHorasDTO) {
-		RegistroHoras registroHoras = horasTrabalhadasMapper.toRegistroHoras(registroHorasDTO);
-		RegistroHoras registro = registroHorasService.update(registroHoras, id);
+	@PostMapping("/salvar")
+	public RegistroHoras salvarRegistro(@RequestBody RegistroHorasDTO dto) {
+			AgenteUser agente = agenteUserService.findById(dto.getAgente_id());
+			RegistroHoras registroHoras = this.horasTrabalhadasMapper.toRegistroHoras(dto);
+			registroHoras.setAgente(agente);
+			return registroHorasService.salvarRegistroHoras(registroHoras);
+	}
+	
+	@Operation(summary = "Editar registro de horas")
+	@PutMapping("/{id}")
+	public ResponseEntity<RegistroHorasDTO> update(@PathVariable Long id, @RequestBody RegistroHorasDTO registroHorasDTO) {
+			RegistroHoras registroHoras = horasTrabalhadasMapper.toRegistroHoras(registroHorasDTO);
+			RegistroHoras registro = registroHorasService.update(registroHoras, id);
 
-		return ResponseEntity.ok(horasTrabalhadasMapper.toRegistroHorasDTO(registro));
-	 }
+			return ResponseEntity.ok(horasTrabalhadasMapper.toRegistroHorasDTO(registro));
+	}
 	 
-	 @Operation(summary = "Buscar registro por id")
-	 @GetMapping("/{id}")
-	 public ResponseEntity<RegistroHorasDTO> findById(@PathVariable Long id) {
-	 	RegistroHoras registroHoras = registroHorasService.findById(id);
-	 	RegistroHorasDTO dto = horasTrabalhadasMapper.toRegistroHorasDTO(registroHoras);
+	@Operation(summary = "Buscar registro por id")
+	@GetMapping("/{id}")
+	public ResponseEntity<RegistroHorasDTO> findById(@PathVariable Long id) {
+			RegistroHoras registroHoras = registroHorasService.findById(id);
+			RegistroHorasDTO dto = horasTrabalhadasMapper.toRegistroHorasDTO(registroHoras);
+			return ResponseEntity.ok(dto);
+	}
+	 
+	@Operation(summary = "Deletar registro de horas")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable Long id) {
+			registroHorasService.delete(id);
+			return ResponseEntity.noContent().build();
+	}
+	 
+	@GetMapping("/agente/{agenteId}")
+	public List<RegistroHoras> getRegistrosByAgente(
+				@PathVariable Long agenteId,
+				@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
+				@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
+			return registroHorasService.getRegistrosByAgenteIdAndPeriodo(agenteId, dataInicio, dataFim);
+	}
+	 
+	@Operation(summary = "Buscar todos os registros")
+	@GetMapping
+	public ResponseEntity<List<RegistroHorasDTO>> buscarTodosRegistros(){
+			List<RegistroHoras> regList = registroHorasService.buscarTodosRegistroHorasRepository();
+			List<RegistroHorasDTO> regListDTO = horasTrabalhadasMapper.toRegistroHorasDTOList(regList);
+			return ResponseEntity.ok(regListDTO);	 
+	} 
+	 
+	@GetMapping("/calcular-horas")
+		public HorasTrabalhadasDTO calcularHorasTrabalhadas(
+				@RequestParam Long agenteId,
+				@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
+				@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
 
-		return ResponseEntity.ok(dto);
-	 }
-	 
-	 @Operation(summary = "Deletar registro de horas")
-	 @DeleteMapping("/{id}")
-	 public ResponseEntity<?> delete(@PathVariable Long id) {
-		 registroHorasService.delete(id);
-		return ResponseEntity.noContent().build();
-	 }
-	 
-	 @GetMapping("/agente/{agenteId}")
-	 public List<RegistroHoras> getRegistrosByAgente(
-	            @PathVariable Long agenteId,
-	            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
-	            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
-	    return registroHorasService.getRegistrosByAgenteIdAndPeriodo(agenteId, dataInicio, dataFim);
-	 }
-	 
-	 @Operation(summary = "Buscar todos os registros")
-	 @GetMapping
-	 public ResponseEntity<List<RegistroHorasDTO>> buscarTodosRegistros(){
-		 List<RegistroHoras> regList = registroHorasService.buscarTodosRegistroHorasRepository();
-		 List<RegistroHorasDTO> regListDTO = horasTrabalhadasMapper.toRegistroHorasDTOList(regList);
-		 return ResponseEntity.ok(regListDTO);	 
-	 } 
-	 
-	 @GetMapping("/calcular-horas")
-     public HorasTrabalhadasDTO calcularHorasTrabalhadas(
-            @RequestParam Long agenteId,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataInicio,
-            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dataFim) {
-
-        return registroHorasService.calcularHorasTrabalhadas(agenteId, dataInicio, dataFim);
-     }
+			return registroHorasService.calcularHorasTrabalhadas(agenteId, dataInicio, dataFim);
+		}
 
 	@GetMapping("/calcular-todos")
 	public ResponseEntity<List<ResumoHorasDTO>> calcularHorasTodos(
-					@RequestParam String dataInicio,
-					@RequestParam String dataFim) {
+				@RequestParam String dataInicio,
+				@RequestParam String dataFim) {
 
-			List<ResumoHorasDTO> lista = registroHorasService.calcularParaTodos(dataInicio, dataFim);
-			return ResponseEntity.ok(lista);
+		List<ResumoHorasDTO> lista = registroHorasService.calcularParaTodos(dataInicio, dataFim);
+		return ResponseEntity.ok(lista);
 	}
 	
 	

@@ -21,7 +21,6 @@ public class RelatorioService {
 	
 	private RelatorioRepository relatorioRepository;
 
-	@Autowired
 	public RelatorioService(RelatorioRepository relatorioRepository) {
 		this.relatorioRepository = relatorioRepository;
 	}
@@ -37,6 +36,10 @@ public class RelatorioService {
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public List<Relatorio> findAll() {
 		return relatorioRepository.findAll();
+	}
+
+	public List<Relatorio> buscarUltimos30Relatorios() {
+			return relatorioRepository.findTop30ByOrderByIdDesc();
 	}
 	
 	@Transactional(readOnly = true)
