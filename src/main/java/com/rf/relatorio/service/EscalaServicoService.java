@@ -25,6 +25,10 @@ public class EscalaServicoService {
 	public List<EscalaServico> findAll() {
 		return escalaServicoRepository.findAll();
 	}
+
+  public List<EscalaServico> buscarUltimos30EscalaServico() {
+			return escalaServicoRepository.findTop30ByOrderByIdDesc();
+	}
 	
 	@Transactional(readOnly = true)
 	public List<EscalaServico> listarEscalaDaEquipe(Long id) {

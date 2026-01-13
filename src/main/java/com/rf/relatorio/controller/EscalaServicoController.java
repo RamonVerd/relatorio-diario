@@ -61,6 +61,11 @@ public class EscalaServicoController {
 		
 		return ResponseEntity.ok(escalaServicoDtoList);
 	}
+
+	@GetMapping("/ultimos30")
+	public List<EscalaServico> getUltimos30EscalaServico() {
+			return escalaServicoService.buscarUltimos30EscalaServico();
+	}
 	
 	@Operation(summary = "Buscar escala por id")
 	@GetMapping("/{id}")
