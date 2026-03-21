@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-public class JwtFilter extends OncePerRequestFilter{
+public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -27,22 +27,40 @@ public class JwtFilter extends OncePerRequestFilter{
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
-            HttpServletResponse response,
-            FilterChain chain)
+                                    HttpServletResponse response,
+                                    FilterChain chain)
             throws ServletException, IOException {
+
+        String path = request.getServletPath();
+
+        // 🔓 Libera endpoints de autenticação
+        if (path.startsWith("/auth")) {
+            chain.doFilter(request, response);
+            return;
+        }
 
         String header = request.getHeader("Authorization");
 
         String username = null;
         String token = null;
 
-        if (header != null && header.startsWith("Bearer ")) {
+        try {
+            if (header != null && header.startsWith("Bearer ")) {
 
-            token = header.substring(7);
-            username = jwtUtil.extractUsername(token);
+                token = header.substring(7);
+
+                // 🔒 valida antes de extrair
+                if (jwtUtil.validateToken(token)) {
+                    username = jwtUtil.extractUsername(token);
+                }
+            }
+        } catch (Exception e) {
+            // 👇 Token inválido, expirado ou malformado
+            // Não quebra a aplicação, apenas ignora
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (username != null &&
+            SecurityContextHolder.getContext().getAuthentication() == null) {
 
             UserDetails userDetails =
                     userDetailsService.loadUserByUsername(username);
@@ -62,6 +80,4 @@ public class JwtFilter extends OncePerRequestFilter{
 
         chain.doFilter(request, response);
     }
-
-
 }

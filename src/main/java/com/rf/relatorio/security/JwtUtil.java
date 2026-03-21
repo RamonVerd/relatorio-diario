@@ -1,19 +1,18 @@
 package com.rf.relatorio.security;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-
 import org.springframework.stereotype.Component;
-
 import java.util.Date;
-
 import javax.crypto.SecretKey;
 
 @Component
 public class JwtUtil {
 
-    private final SecretKey SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+    private static final String SECRET = "minha-chave-super-secreta-123456789";
+
+    private final SecretKey SECRET_KEY =
+            Keys.hmacShaKeyFor(SECRET.getBytes());
 
     public String generateToken(String username) {
 
@@ -35,5 +34,15 @@ public class JwtUtil {
                 .getSubject();
     }
 
-
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder()
+                    .setSigningKey(SECRET_KEY)
+                    .build()
+                    .parseClaimsJws(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
