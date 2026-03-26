@@ -20,7 +20,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 public class JwtFilter extends OncePerRequestFilter {
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtService jwtService;
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -50,8 +50,8 @@ public class JwtFilter extends OncePerRequestFilter {
                 token = header.substring(7);
 
                 // 🔒 valida antes de extrair
-                if (jwtUtil.validateToken(token)) {
-                    username = jwtUtil.extractUsername(token);
+                if (jwtService.validateToken(token)) {
+                    username = jwtService.extractUsername(token);
                 }
             }
         } catch (Exception e) {
