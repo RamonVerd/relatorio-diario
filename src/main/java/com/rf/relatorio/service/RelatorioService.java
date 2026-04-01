@@ -18,12 +18,9 @@ import com.rf.relatorio.repository.RelatorioRepository;
 
 @Service
 public class RelatorioService {
-	
+	@Autowired
 	private RelatorioRepository relatorioRepository;
 
-	public RelatorioService(RelatorioRepository relatorioRepository) {
-		this.relatorioRepository = relatorioRepository;
-	}
 	
 	public Optional<Relatorio> buscarPorDataDoRelatorio(String data) {
 	  return relatorioRepository.findByDatadorelatorio(data);

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.rf.relatorio.entity.Equipe;
@@ -14,12 +13,8 @@ import com.rf.relatorio.repository.EquipeRepository;
 @Service
 public class EquipeService {
 	
-	private EquipeRepository equipeRepository;
-	
 	@Autowired
-	public EquipeService(EquipeRepository equipeRepository) {
-		this.equipeRepository = equipeRepository;
-	}
+	private EquipeRepository equipeRepository;
 	
 	public Equipe createEquipe(Equipe equipe) {
 		return equipeRepository.save(equipe);

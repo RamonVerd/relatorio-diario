@@ -16,15 +16,12 @@ import com.rf.relatorio.repository.EquipeRepository;
 @Service
 public class AgenteUserService {
 
+	@Autowired
 	private AgenteUserRepository agenteRepository;
 	
-    private EquipeRepository equipeRepository;
-	
 	@Autowired
-	public AgenteUserService(AgenteUserRepository agenteRepository, EquipeRepository equipeRepository) {
-		this.agenteRepository = agenteRepository;
-		this.equipeRepository = equipeRepository;
-	}
+  private EquipeRepository equipeRepository;
+	
 	
 	public AgenteUser createAgenteUser(AgenteUser agenteUser) {
 		return agenteRepository.save(agenteUser); 

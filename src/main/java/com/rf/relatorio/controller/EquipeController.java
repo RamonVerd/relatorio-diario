@@ -28,14 +28,11 @@ import io.swagger.v3.oas.annotations.Operation;
 @CrossOrigin(origins = "*")
 public class EquipeController {
 	
-	private EquipeService equipeService;
-	private EquipeMapper equipeMapper;
-	
 	@Autowired
-	public EquipeController(EquipeService equipeService, EquipeMapper equipeMapper) {
-		this.equipeService = equipeService;
-		this.equipeMapper = equipeMapper;
-	}
+	private EquipeService equipeService;
+
+	@Autowired
+	private EquipeMapper equipeMapper;
 	
 	@Operation(summary = "Criar equipe")
 	@PostMapping
