@@ -33,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         String path = request.getServletPath();
 
-        // 🔓 Libera endpoints de autenticação
+        // Libera endpoints de autenticação
         if (path.startsWith("/auth")) {
             chain.doFilter(request, response);
             return;
@@ -49,13 +49,13 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 token = header.substring(7);
 
-                // 🔒 valida antes de extrair
+                // valida antes de extrair
                 if (jwtService.validateToken(token)) {
                     username = jwtService.extractUsername(token);
                 }
             }
         } catch (Exception e) {
-            // 👇 Token inválido, expirado ou malformado
+            // Token inválido, expirado ou malformado
             // Não quebra a aplicação, apenas ignora
         }
 

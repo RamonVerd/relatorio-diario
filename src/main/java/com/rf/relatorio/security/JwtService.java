@@ -25,8 +25,6 @@ public class JwtService {
       public String generateToken(Authentication authentication){
             UserDetails user = (UserDetails) authentication.getPrincipal();
 
-            System.out.println("AUTHORITIES NO TOKEN: " + user.getAuthorities());
-
             List<String> roles = user.getAuthorities().stream()
                   .map(GrantedAuthority::getAuthority)
                   .collect(Collectors.toList());

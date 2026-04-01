@@ -24,7 +24,6 @@ public class UsuarioService  implements UserDetailsService {
                 Usuario usuario = repository.findByUsername(username)
                         .orElseThrow(() ->
                                 new UsernameNotFoundException("Usuário não encontrado"));
-                                System.out.println("ROLE DO BANCO: " + usuario.getRole());
                                 return org.springframework.security.core.userdetails.User
                                         .builder()
                                         .username(usuario.getUsername())

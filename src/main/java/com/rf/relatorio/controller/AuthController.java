@@ -4,8 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,29 +33,29 @@ public class AuthController {
                         )
                 );
 
-                String token = jwtService.generateToken(auth); ///continuar aqui ver se ainda ta dando erro
+                String token = jwtService.generateToken(auth); 
                 return new AuthResponseDTO(token);
         }
 
-        @GetMapping("/teste-senha")
-        public String testarSenha(){
+        // @GetMapping("/teste-senha")
+        // public String testarSenha(){
 
-                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        //         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-                boolean resultado = encoder.matches(
-                        "567890",
-                        "$2a$10$mCRRcoXOjiIS6ziX9MlwauFJrYgP62BvgDmNsadUxlmQuuplme7SK"
-                );
+        //         boolean resultado = encoder.matches(
+        //                 "567890",
+        //                 "$2a$10$mCRRcoXOjiIS6ziX9MlwauFJrYgP62BvgDmNsadUxlmQuuplme7SK"
+        //         );
 
-                return "Senha válida: " + resultado;
-        }
+        //         return "Senha válida: " + resultado;
+        // }
 
-        @GetMapping("/gerar")
-        public String gerarSenha(){
+        // @GetMapping("/gerar")
+        // public String gerarSenha(){
 
-                BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        //         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-                return encoder.encode("567890");
-        }
+        //         return encoder.encode("567890");
+        // }
 
 }
